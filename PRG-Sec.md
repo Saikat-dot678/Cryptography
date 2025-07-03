@@ -1,140 +1,184 @@
 
 ---
 
-## 🔐 Pseudorandom Generator (PRG) – Formal Definition & Security
+## 🔐 1. What is a Pseudorandom Generator (PRG)?
 
-### 🌱 What is a PRG?
+### ➤ Formal Definition:
 
-* A **PRG** is a deterministic algorithm `G` that takes a **short random seed** from a keyspace `K` and outputs a **longer string** of `n` bits:
-
-  $$
-  G: K \rightarrow \{0,1\}^n
-  $$
-* **Goal**: The output should be *computationally indistinguishable* from a **uniform random string** in $\{0,1\}^n$.
-
----
-
-## 🎯 Indistinguishability from Random
-
-### 🤖 What does it mean to look "random"?
-
-* Let:
-
-  * `G(k)` be the PRG output for uniformly random seed `k`.
-  * `U_n` be the uniform distribution over all `n`-bit strings.
-* A PRG is secure if **no efficient algorithm** (statistical test) can distinguish between `G(k)` and a truly random `n`-bit string.
-
----
-
-## 🧪 Statistical Tests
-
-### ✅ What is a Statistical Test?
-
-* A statistical test `A` is any **efficient algorithm**:
-
-  $$
-  A: \{0,1\}^n \rightarrow \{0,1\}
-  $$
-
-  * `A(x) = 1`: "x looks random"
-  * `A(x) = 0`: "x does not look random"
-
-### 🧠 Example Tests:
-
-1. **Balance Test**: Number of 0s ≈ number of 1s (difference < $10\sqrt{n}$)
-2. **Double Zero Pattern**: Count of `00` blocks ≈ $n/4$
-3. **Max Run Length**: Longest sequence of 0s ≈ $\log n$
-
-> 🔎 Note: Statistical tests can behave wrongly (e.g., consider the all-1s string passing the max run test).
-
----
-
-## ⚖️ Advantage of a Statistical Test
-
-### 📐 Formal Definition
+A **Pseudorandom Generator** is a deterministic function:
 
 $$
-\text{Adv}_{\text{PRG}}^A = \left| \Pr_{k \leftarrow K}[A(G(k)) = 1] - \Pr_{r \leftarrow \{0,1\}^n}[A(r) = 1] \right|
+G : \mathcal{K} \rightarrow \{0, 1\}^n
 $$
 
-* **High advantage (\~1)** → `A` can distinguish PRG output from random → PRG is **insecure**
-* **Low advantage (\~0)** → `A` cannot distinguish → PRG is **secure against A**
+* It takes a short, uniformly random **seed** `k ∈ K` and outputs a longer, `n`-bit string.
+* The output of `G` is **not truly random** but should appear **indistinguishable from random** to any efficient observer.
 
-### 🧩 Examples:
+### ➤ Goal of a PRG:
 
-* If `A` **always outputs 0**, then `Adv = 0` (useless test).
-* If in 2/3 of keys `G(k)` starts with 1, and test checks if first bit is 1:
+To ensure that:
+
+$$
+\text{Distribution of } G(k) \text{ (for random } k) \approx \text{Uniform distribution over } \{0,1\}^n
+$$
+
+---
+
+## 🎯 2. What Does "Indistinguishable from Random" Mean?
+
+We compare two distributions:
+
+1. **PRG Output Distribution**: $G(k)$ where $k \leftarrow \mathcal{K}$
+2. **Truly Uniform Distribution**: $r \leftarrow \{0,1\}^n$
+
+We want **no efficient algorithm** to tell the difference between these two.
+
+---
+
+## 🧪 3. Statistical Tests (Distinguishers)
+
+### ➤ What is a Statistical Test?
+
+A **statistical test** is an algorithm:
+
+$$
+A : \{0,1\}^n \rightarrow \{0,1\}
+$$
+
+* `A(x) = 1`: Thinks `x` is **random**
+* `A(x) = 0`: Thinks `x` is **not random**
+
+### ➤ Examples:
+
+1. **Balance Test**:
+
+   * Accepts if the number of 0’s and 1’s in `x` differ by at most $10\sqrt{n}$.
+   * For random strings, this condition is usually satisfied.
+
+2. **Double Zero Pattern Test**:
+
+   * Accepts if the number of occurrences of `00` ≈ $n/4$.
+   * Rejects strings like all 0s or all 1s.
+
+3. **Maximum Run Test**:
+
+   * Accepts if the longest run of 0s ≤ $10 \cdot \log n$.
+   * Fails on long uniform patterns.
+
+> Statistical tests don’t have to be perfect—they can be fooled. Many such tests exist (e.g., NIST randomness tests).
+
+---
+
+## ⚖️ 4. Advantage of a Statistical Test
+
+### ➤ Definition:
+
+The **advantage** of a statistical test `A` against a PRG `G` is:
+
+$$
+\text{Adv}_{\text{PRG}}^A = \left| \Pr_{k \leftarrow \mathcal{K}}[A(G(k)) = 1] - \Pr_{r \leftarrow \{0,1\}^n}[A(r) = 1] \right|
+$$
+
+* Measures how **differently** A behaves on PRG output vs truly random.
+* If:
+
+  * **Adv ≈ 0** → `A` can’t distinguish PRG output from random.
+  * **Adv ≈ 1** → `A` can easily distinguish PRG output (PRG is insecure).
+
+### ➤ Example:
+
+If the first bit of G(k) is 1 with 2/3 probability:
+
+* A test that outputs 1 iff first bit is 1 has:
+
+  $$
+  \Pr[A(G(k)) = 1] = \frac{2}{3}, \quad \Pr[A(r) = 1] = \frac{1}{2}
+  $$
+
+  So,
 
   $$
   \text{Adv} = \left| \frac{2}{3} - \frac{1}{2} \right| = \frac{1}{6}
   $$
-
-  → Non-negligible ⇒ **PRG is broken**.
-
----
-
-## ✅ Secure PRG Definition
-
-A PRG `G` is **secure** if for **all efficient statistical tests** `A`,
-
-$$
-\text{Adv}_{\text{PRG}}^A \text{ is negligible}
-$$
-
-* **Necessity of efficiency**: If you allow *all* tests (even inefficient ones), **no PRG can be secure**, because brute-force tests can distinguish.
+* 1/6 is non-negligible ⇒ **PRG is broken**.
 
 ---
 
-## 🔁 Link to Unpredictability
+## ✅ 5. Definition of a Secure PRG
 
-### 🎯 Definition of Unpredictability:
+A PRG `G` is **secure** if:
 
-* Given the first `i` bits of `G(k)`, it is hard to **predict the (i+1)ᵗʰ bit** with probability better than ½ + ε (for non-negligible ε).
+$$
+\forall \text{ efficient statistical tests } A, \quad \text{Adv}_{\text{PRG}}^A \text{ is negligible}
+$$
 
-### 🔁 Implication:
+* That is, no polynomial-time algorithm `A` can distinguish `G(k)` from random with significant advantage.
+* Must restrict to **efficient** `A`, otherwise brute-force attacks would always work.
+
+---
+
+## 🔁 6. Link to Unpredictability
+
+### ➤ Definition of Unpredictability:
+
+A PRG is **unpredictable** if:
+
+$$
+\forall i < n, \quad \text{given } G(k)_1, G(k)_2, ..., G(k)_i, \text{ it’s hard to predict } G(k)_{i+1}
+$$
+
+* Predicting correctly with probability $\frac{1}{2} + \epsilon$ for **non-negligible ε** breaks unpredictability.
+
+### ➤ Why Security Implies Unpredictability:
+
+* If a predictor `A` exists that predicts `G(k)_{i+1}` given the first `i` bits with advantage ε:
+
+  * Then we can create a statistical test `B`:
+
+    * Input: full `n`-bit string `x`
+    * Run `A` on first `i` bits
+    * Check if prediction matches `x_{i+1}`
+  * This `B` distinguishes PRG output from random ⇒ PRG is **not secure**.
+
+Hence,
 
 > **Secure PRG ⇒ Unpredictable**
 
-**Proof sketch**:
+---
 
-* If an algorithm `A` can predict the next bit with ε advantage,
-* Then construct a test `B` that:
+## 📜 7. Yao’s Theorem (1982)
 
-  * Uses `A` to predict bit i+1
-  * Outputs 1 if prediction is correct
-* `B` becomes a distinguisher ⇒ PRG is **not secure**
+> 🔁 **Yao's Theorem**: If a PRG is unpredictable at **every bit position**, then it is secure.
+
+Formally:
+
+* If for **every i**, no efficient algorithm can predict $G(k)_{i+1}$ from $G(k)_1, ..., G(k)_i$,
+* Then no efficient statistical test can distinguish $G(k)$ from a uniform string.
+
+### ➤ Implication:
+
+* Next-bit unpredictability is **equivalent** to indistinguishability from random.
+* So we don’t need to test all distinguishers—just next-bit predictors.
 
 ---
 
-## 🔁 Converse: Yao’s Theorem (1982)
+## 🔄 8. Application of Yao's Theorem
 
-### 📘 Theorem:
+Suppose:
 
-> If a PRG is unpredictable at *every* position i, then it is a **secure PRG**.
+* It's easy to compute the **first bit** of `G(k)` from the **last n-1 bits**.
 
-* **Meaning**: Next-bit predictors are **universal distinguishers**
-* So **PRG is secure ⇔ PRG is unpredictable**
+Then:
 
----
-
-## 🔁 Backward Predictability & Security
-
-### Question:
-
-> If you can predict **first bit** from the **last bits**, is the PRG predictable?
-
-### Answer: **Yes**, because:
-
-* Then PRG is **not secure**
-* ⇒ By **Yao's theorem**, PRG is **predictable** (at some position)
+* This doesn’t fit "next-bit" prediction, but still implies **G is not secure**.
+* By Yao’s theorem, any insecure PRG is also **predictable at some position** (even if not the first or last).
+* So this reverse predictability still implies insecurity.
 
 ---
 
-## 🧾 Computational Indistinguishability Notation
+## 🔧 9. Computational Indistinguishability (Generalized)
 
-### Generalized View:
-
-Two distributions $P_1$ and $P_2$ are **computationally indistinguishable** if:
+### ➤ Notation:
 
 $$
 P_1 \approx_c P_2
@@ -142,34 +186,31 @@ $$
 
 Means:
 
-* For all **efficient** statistical tests `A`,
+* Distributions $P_1$ and $P_2$ are **computationally indistinguishable**.
+* No **polynomial-time algorithm** can distinguish them with non-negligible advantage.
+
+### ➤ Applied to PRGs:
 
 $$
-\left| \Pr_{x \leftarrow P_1}[A(x) = 1] - \Pr_{x \leftarrow P_2}[A(x) = 1] \right|
+\{ G(k) \mid k \leftarrow \mathcal{K} \} \approx_c \mathcal{U}_n
 $$
 
-is **negligible**
-
-### 📌 PRG Security (Rewritten):
-
-$$
-\{G(k) \mid k \leftarrow K\} \approx_c \mathcal{U}_n
-$$
+→ Output of `G` is indistinguishable from uniform distribution.
 
 ---
 
-## 💡 Summary
+## 🧠 10. Summary Table
 
-| Concept                            | Key Idea                                           |
-| ---------------------------------- | -------------------------------------------------- |
-| PRG                                | Outputs long string from short seed                |
-| Secure PRG                         | Output indistinguishable from uniform              |
-| Statistical Test                   | Efficient distinguisher algorithm                  |
-| Advantage                          | Test’s ability to distinguish PRG from random      |
-| Secure PRG ⇒ Unpredictable         | Next bit cannot be guessed from previous bits      |
-| Yao’s Theorem                      | Unpredictability ⇔ Security                        |
-| Computational Indistinguishability | Core idea behind defining security in cryptography |
+| Concept                       | Summary                                                             |
+| ----------------------------- | ------------------------------------------------------------------- |
+| PRG                           | Expands short random seed to longer pseudorandom output             |
+| Statistical Test              | Efficient algorithm trying to decide if input is random             |
+| Advantage                     | Difference in behavior on PRG vs uniform input                      |
+| Secure PRG                    | All statistical tests have negligible advantage                     |
+| Unpredictability              | Can't predict next bit from previous                                |
+| Yao’s Theorem                 | Unpredictability ⇔ Indistinguishability                             |
+| Indistinguishability Notation | $P_1 \approx_c P_2$ means indistinguishable by efficient algorithms |
 
 ---
 
-Let me know if you'd like this turned into a **PDF**, **visual mind map**, or **flashcards**!
+
