@@ -739,3 +739,1469 @@ You should know:
 10. Explain why decryption must be the inverse of encryption in a symmetric cipher.
 
 *Next we'll study **Section 2.4 — Sequences and Summations**, which introduces mathematical notation heavily used in algorithm analysis, probability theory, and cryptographic security proofs.* 🚀
+
+
+
+# 📖 Chapter 2.4 — Sequences and Summations
+
+This section is extremely important because it forms the mathematical foundation for:
+* Algorithm Analysis ⏱️
+* Probability Theory 🎲
+* Information Theory 📡
+* Complexity Theory 🧩
+* Cryptography 🔐
+
+When you later read cryptography papers, you'll constantly see expressions like:
+$$\sum_{i=1}^{n} a_i$$
+and sequences such as:
+$2^n, \quad n^2, \quad \log n$
+
+This chapter teaches that language. 🗣️
+
+---
+
+## 🔢 1. What is a Sequence?
+
+A sequence is an **ordered list** of elements.
+Unlike sets (e.g., $\{1, 2, 3\}$ where order doesn't matter), for sequences, $1, 2, 3$ is different from $3, 2, 1$.
+
+### 📝 Examples
+* Sequence of positive integers: $1, 2, 3, 4, 5, \dots$
+* Sequence of odd numbers: $1, 3, 5, 7, 9, \dots$
+* Sequence of powers of two: $1, 2, 4, 8, 16, 32, \dots$ *(This one appears everywhere in cryptography!)*
+
+---
+
+## 🏷️ Sequence Notation
+
+A sequence is often written:
+$$a_1, a_2, a_3, \dots, a_n$$
+where $a_i$ is called the $i$-th term.
+
+**Example:**
+$2, 4, 6, 8, 10, \dots$ can be written as:
+$$a_n = 2n$$
+*Check:*
+* $a_1 = 2(1) = 2$
+* $a_2 = 2(2) = 4$
+* $a_3 = 2(3) = 6$
+Correct! ✅
+
+### Explicit Formula
+An explicit formula gives the $n$-th term directly.
+**Example:** $$a_n = 3n + 1$$
+* $a_1 = 4$
+* $a_2 = 7$
+* $a_3 = 10$
+
+---
+
+## 📈 Types of Sequences
+
+### 1. Geometric Sequences
+A geometric sequence multiplies by the same ratio each step.
+**Example:** $1, 2, 4, 8, 16, \dots$
+* Ratio: $r = 2$
+
+**General formula:**
+$$a_n = a_1 r^{n-1}$$
+
+**Example:**
+$a_1 = 3, \quad r = 2$
+Then:
+$$a_n = 3 \cdot 2^{n-1}$$
+*Check:* $a_4 = 3 \cdot 2^3 = 24$. Correct! ✅
+
+### 2. Arithmetic Sequences
+Each term differs by a constant amount.
+**Example:** $3, 7, 11, 15, 19, \dots$
+* Difference: $d = 4$
+
+**Formula:**
+$$a_n = a_1 + (n-1)d$$
+
+**Example:**
+$a_1 = 3, \quad d = 4$
+Then:
+$$a_n = 3 + 4(n-1)$$
+
+---
+
+## 🔄 Recursive Definitions
+
+Sometimes we define a sequence using previous terms.
+**Example:**
+* $a_1 = 1$
+* $a_n = a_{n-1} + 2$
+
+Compute:
+* $a_2 = 1 + 2 = 3$
+* $a_3 = 3 + 2 = 5$
+* $a_4 = 5 + 2 = 7$
+Thus: $1, 3, 5, 7, \dots$
+
+### 🌀 Fibonacci Sequence
+One of the most famous recursive sequences.
+**Definition:**
+* $F_0 = 0$
+* $F_1 = 1$
+* $F_n = F_{n-1} + F_{n-2}$ for $n \ge 2$
+
+First terms: $0, 1, 1, 2, 3, 5, 8, 13, 21, \dots$
+This sequence appears in Mathematics, Algorithms, Number Theory, and Cryptography. 🌿
+
+---
+
+## ➕ Summation Notation
+
+Instead of writing $1 + 2 + 3 + 4 + 5$, we use:
+$$\sum_{i=1}^{5} i$$
+Read: *Sum $i$ from 1 to 5.*
+Meaning: $1 + 2 + 3 + 4 + 5 = 15$
+
+### 🧩 Components of Sigma Notation
+$$\sum_{i=1}^{5} i$$
+* $i$ = index
+* $1$ = starting value
+* $5$ = ending value
+* $i$ = expression being summed
+
+**Example 1:** Compute $\sum_{i=1}^{4} i$
+Expand: $1 + 2 + 3 + 4 = 10$
+
+**Example 2:** Compute $\sum_{i=1}^{4} i^2$
+Expand: $1^2 + 2^2 + 3^2 + 4^2 = 1 + 4 + 9 + 16 = 30$
+
+---
+
+## 📜 Important Summation Formulas
+*You must memorize these.* 🧠
+
+### Formula 1: First $n$ integers
+$$\sum_{i=1}^{n} i = \frac{n(n+1)}{2}$$
+**Example:** $1 + 2 + \dots + 100$
+$$= \frac{100(101)}{2} = 5050$$
+
+### Formula 2: Squares
+$$\sum_{i=1}^{n} i^2 = \frac{n(n+1)(2n+1)}{6}$$
+**Example:** For $n = 3$
+$1 + 4 + 9 = 14$
+Formula gives: $\frac{3 \cdot 4 \cdot 7}{6} = \frac{84}{6} = 14$. Correct! ✅
+
+### Formula 3: Cubes
+$$\sum_{i=1}^{n} i^3 = \left(\frac{n(n+1)}{2}\right)^2$$
+**Example:** For $n = 3$
+$1 + 8 + 27 = 36$
+Formula: $\left(\frac{3 \cdot 4}{2}\right)^2 = 6^2 = 36$. Correct! ✅
+
+---
+
+## 📏 Linearity of Summation
+Very important.
+
+**Rule 1:**
+$$\sum (a_i + b_i) = \sum a_i + \sum b_i$$
+
+**Rule 2:**
+$$\sum c \cdot a_i = c \sum a_i$$
+(where $c$ is a constant).
+
+**Example:**
+Compute: $\sum_{i=1}^{4}(2i + 1)$
+Expand manually: $3 + 5 + 7 + 9 = 24$
+Using linearity:
+$$2 \sum_{i=1}^{4} i + \sum_{i=1}^{4} 1$$
+$$= 2(10) + 4 = 24$$
+
+---
+
+## 🔣 Double Summations
+**Example:**
+$$\sum_{i=1}^{2}\sum_{j=1}^{3} 1$$
+* Inner sum: $1 + 1 + 1 = 3$
+* Outer sum: $3 + 3 = 6$
+Answer: $6$
+
+---
+
+## 🕵️‍♂️ Why Cryptographers Care
+
+Suppose an attacker succeeds with probability $\frac{1}{2^n}$ over all keys.
+Total probability calculations often involve $\sum$ expressions. Security proofs are full of summations.
+
+**Example from Complexity Theory:**
+Suppose an algorithm performs $1 + 2 + 3 + \dots + n$ operations.
+Using the formula $\frac{n(n+1)}{2}$, this is approximately $\frac{1}{2}n^2$, which leads to **$O(n^2)$** running time. ⏱️
+
+---
+
+To help visualize how different sequences and their partial sums grow, explore this interactive tool:
+
+
+
+---
+
+## ✅ Summary
+
+You should know:
+
+* **Arithmetic Sequence:** $a_n = a_1 + (n-1)d$
+* **Geometric Sequence:** $a_n = a_1 r^{n-1}$
+* **Recursive Sequence:** Defined using previous terms.
+* **Fibonacci Sequence:** $F_n = F_{n-1} + F_{n-2}$
+* **Summation Notation:** $\sum$
+
+**Essential Formulas:**
+
+* $\sum_{i=1}^{n} i = \frac{n(n+1)}{2}$
+* $\sum_{i=1}^{n} i^2 = \frac{n(n+1)(2n+1)}{6}$
+* $\sum_{i=1}^{n} i^3 = \left(\frac{n(n+1)}{2}\right)^2$
+
+---
+
+## ✍️ Exercises
+
+### Basic
+
+1. Find the 10th term of: $3, 7, 11, 15, \dots$
+2. Find the 8th term of: $2, 6, 18, 54, \dots$
+3. Compute: $\sum_{i=1}^{5} i$
+
+### Medium
+
+4. Compute: $\sum_{i=1}^{10} i$
+5. Compute: $\sum_{i=1}^{5} i^2$
+6. Compute: $\sum_{i=1}^{4}(3i + 2)$
+
+### Hard
+
+7. Prove: $1 + 3 + 5 + \dots + (2n - 1) = n^2$
+8. Find a closed form for: $5 + 10 + 15 + \dots + 5n$
+9. Compute: $\sum_{i=1}^{100}(2i - 1)$
+10. Explain why $\sum_{i=1}^{n} i$ grows on the order of $O(n^2)$.
+
+*Next comes **Section 2.5 — Cardinality of Sets**, where Rosen develops finite and infinite sets, countable vs uncountable infinity, and Cantor's theorem. This is one of the deepest and most beautiful chapters in discrete mathematics and has surprising connections to cryptography and theoretical computer science.* 🚀
+
+
+
+# ♾️ Chapter 2.5 — Cardinality of Sets
+
+This is one of the most profound sections in discrete mathematics.
+Until now, cardinality simply meant:
+> *The number of elements in a set.*
+
+For example:
+$A = \{1, 2, 3, 4\}$
+has cardinality
+$|A| = 4$
+Easy. 
+
+But what about:
+$\mathbb{N} = \{0, 1, 2, 3, \dots\}$
+How many elements does it have? **Infinite.**
+
+Can different infinite sets have different sizes?
+Surprisingly: **Yes.** 🤯
+This discovery by Georg Cantor completely changed mathematics.
+
+---
+
+## 📏 1. Cardinality Revisited
+
+For finite sets:
+$|A|$ means the number of elements.
+*Example:*
+$A = \{a, b, c, d\}$
+Then:
+$|A| = 4$
+
+For infinite sets we need a more sophisticated definition.
+
+### ⚖️ Comparing Sizes of Sets
+Suppose:
+$A = \{1, 2, 3\}$
+$B = \{a, b, c\}$
+
+How do we know they have the same size?
+Match elements:
+* 1 ↔ a
+* 2 ↔ b
+* 3 ↔ c
+
+Every element gets exactly one partner. No leftovers.
+This idea is called a **bijection**. 🤝
+
+### 📖 Definition
+Sets $A$ and $B$ have the same cardinality if there exists a bijection:
+$$f: A \to B$$
+between them.
+
+**Notation:**
+$|A| = |B|$
+
+### 📝 Example
+$A = \{1, 2, 3\}$
+$B = \{x, y, z\}$
+
+Define:
+* 1 → x
+* 2 → y
+* 3 → z
+
+Bijection exists.
+Therefore:
+$|A| = |B|$
+
+---
+
+## 🌌 Infinite Sets
+
+Now consider:
+$\mathbb{N} = \{0, 1, 2, 3, \dots\}$
+This set is infinite. Can a proper subset have the same size?
+
+* For finite sets: Subset → smaller (always).
+* For infinite sets: Subset → maybe same size. (Surprisingly!)
+
+### 📝 Example
+Consider even numbers:
+$E = \{0, 2, 4, 6, 8, \dots\}$
+Clearly:
+$E \subset \mathbb{N}$
+Looks smaller. But define:
+$$f(n) = 2n$$
+
+Then:
+* 0 ↔ 0
+* 1 ↔ 2
+* 2 ↔ 4
+* 3 ↔ 6
+
+Every natural number matches exactly one even number. Bijection exists.
+Therefore:
+$$|E| = |\mathbb{N}|$$
+Amazing. A proper subset has the same size. ✨
+
+---
+
+## 🔢 Countably Infinite Sets
+
+A set is countably infinite if it has the same cardinality as $\mathbb{N}$.
+
+**Definition:**
+A set $A$ is countable if:
+$|A| = |\mathbb{N}|$
+
+### 📝 Examples:
+* **Natural Numbers** ($\mathbb{N}$): Countable.
+* **Even Numbers** ($\{0, 2, 4, 6, \dots\}$): Countable.
+* **Odd Numbers** ($\{1, 3, 5, 7, \dots\}$): Countable.
+* **Multiples of 100** ($\{100, 200, 300, \dots\}$): Countable.
+
+### 🧮 Integers Are Countable
+At first glance:
+$\mathbb{Z} = \{\dots, -2, -1, 0, 1, 2, \dots\}$
+seems larger than $\mathbb{N}$.
+
+But we can list integers:
+* 0
+* 1
+* -1
+* 2
+* -2
+* 3
+* -3
+* ...
+
+This creates a bijection.
+Therefore:
+$|\mathbb{Z}| = |\mathbb{N}|$
+Integers are countable. ✅
+
+### 🍕 Rational Numbers Are Countable
+This is one of Cantor's most surprising discoveries.
+Rationals:
+$$\mathbb{Q} = \left\{\frac{a}{b} \mid a, b \in \mathbb{Z}, b \neq 0\right\}$$
+There seem to be vastly more rationals.
+Yet Cantor proved:
+$|\mathbb{Q}| = |\mathbb{N}|$
+Countable. The proof uses a clever diagonal traversal of fractions arranged in a grid.
+
+---
+
+## 🚫 Uncountable Sets
+
+Not every infinite set is countable. Some infinities are larger.
+
+### 📉 Real Numbers
+Consider: $\mathbb{R}$
+Can we list all real numbers?
+Cantor proved: **No.**
+No matter how you try to list them, some real number will always be missing.
+Therefore:
+$|\mathbb{R}| > |\mathbb{N}|$
+Real numbers are uncountable.
+
+### 📐 Cantor's Diagonal Argument
+One of the greatest proofs in mathematics.
+Suppose all real numbers in $(0, 1)$ could be listed:
+* $0.12345\dots$
+* $0.87654\dots$
+* $0.11111\dots$
+* ...
+
+Construct a new number. Change:
+* first digit of first number
+* second digit of second number
+* third digit of third number
+* and so on.
+
+The new number differs from every listed number.
+Therefore it is not in the list. Contradiction.
+Hence: $(0, 1)$ cannot be countable. 💥
+
+### 💡 Important Consequence
+$|\mathbb{R}| > |\mathbb{N}|$
+There are strictly more real numbers than natural numbers.
+
+---
+
+## 📦 Power Sets
+
+Recall:
+$\mathcal{P}(A)$ means: All subsets of $A$.
+
+### 🎲 Finite Example
+If $|A| = 3$, then:
+$|\mathcal{P}(A)| = 2^3 = 8$
+
+Example: $A = \{1, 2, 3\}$
+Power set contains 8 subsets.
+
+### 🏆 Cantor's Theorem
+One of the deepest theorems in mathematics.
+For every set $A$:
+$$|\mathcal{P}(A)| > |A|$$
+Always.
+
+For finite sets: $2^n > n$, which is obvious.
+The amazing part: **It remains true even for infinite sets.**
+
+**Example:**
+$|\mathcal{P}(\mathbb{N})| > |\mathbb{N}|$
+Thus: $\mathcal{P}(\mathbb{N})$ is uncountable.
+
+---
+
+## 🔐 Why Cryptographers Care
+
+Suppose:
+* Key length: $n$
+* Possible keys: $\{0, 1\}^n$
+* Number of keys: $2^n$
+
+This is cardinality.
+
+**Example: AES-128**
+Key space: $2^{128}$ possible keys.
+
+Security often depends on the attacker searching through a huge set.
+Understanding cardinality tells us: How many possibilities exist? 🕵️‍♂️
+
+---
+
+## 📊 Finite vs Infinite
+
+| Set | Cardinality |
+| :--- | :--- |
+| $\{1, 2, 3\}$ | $3$ |
+| $\mathbb{N}$ | Countably infinite |
+| $\mathbb{Z}$ | Countably infinite |
+| $\mathbb{Q}$ | Countably infinite |
+| $\mathbb{R}$ | Uncountable |
+| $\mathcal{P}(\mathbb{N})$ | Uncountable |
+
+---
+
+## 🧠 Important Facts to Memorize
+
+**Countable:**
+* $\mathbb{N}$
+* $\mathbb{Z}$
+* $\mathbb{Q}$
+
+**Uncountable:**
+* $\mathbb{R}$
+* $(0, 1)$
+* $\mathcal{P}(\mathbb{N})$
+
+**Cantor's Theorem:**
+$|\mathcal{P}(A)| > |A|$
+
+**Power Set Formula:**
+For finite sets:
+$|\mathcal{P}(A)| = 2^{|A|}$
+
+---
+
+## ✍️ Exercises
+
+### Medium
+1. Show that: $|\{2, 4, 6, 8, \dots\}| = |\mathbb{N}|$
+2. Explain why $\mathbb{Z}$ is countable.
+3. Find: $|\mathcal{P}(\{a, b, c, d\})|$
+
+### Hard
+4. Explain why $\mathbb{Q}$ is countable even though it seems larger than $\mathbb{N}$.
+5. State Cantor's theorem.
+6. Explain the basic idea behind Cantor's diagonal argument.
+7. Why does $|\mathcal{P}(\mathbb{N})| > |\mathbb{N}|$ imply multiple sizes of infinity exist?
+
+*Next we'll study **Section 2.6 — Matrices**, where Rosen introduces matrix operations, Boolean matrices, and applications to graphs and relations. These ideas later connect to coding theory, cryptanalysis, and advanced discrete structures.* 🚀
+
+
+
+
+# Chapter 2.6 — Matrices
+
+This is the last major section of Chapter 2.
+
+At first matrices may seem unrelated to cryptography, but they appear in:
+
+* Error-Correcting Codes
+* Coding Theory
+* Lattice-Based Cryptography
+* Graph Algorithms
+* Network Analysis
+* Hill Cipher (classical cryptography)
+* Boolean Relations
+
+Rosen focuses on matrices as discrete structures rather than advanced linear algebra.
+
+---
+
+# 1. What is a Matrix?
+
+A matrix is a rectangular arrangement of numbers.
+
+Example:
+
+[
+A=
+\begin{bmatrix}
+1 & 2\
+3 & 4
+\end{bmatrix}
+]
+
+---
+
+Rows:
+
+```text
+1 2
+3 4
+```
+
+Columns:
+
+```text
+1 3
+
+2 4
+```
+
+---
+
+# Matrix Dimensions
+
+If a matrix has:
+
+* m rows
+* n columns
+
+it is called an:
+
+[
+m\times n
+]
+
+matrix.
+
+---
+
+Example
+
+[
+\begin{bmatrix}
+1 & 2 & 3\
+4 & 5 & 6
+\end{bmatrix}
+]
+
+has:
+
+```text
+2 rows
+3 columns
+```
+
+Therefore:
+
+[
+2\times3
+]
+
+matrix.
+
+---
+
+# Matrix Entries
+
+The entry in row i and column j is:
+
+[
+a_{ij}
+]
+
+---
+
+Example
+
+[
+A=
+\begin{bmatrix}
+1 & 2\
+3 & 4
+\end{bmatrix}
+]
+
+Then:
+
+[
+a_{11}=1
+]
+
+[
+a_{12}=2
+]
+
+[
+a_{21}=3
+]
+
+[
+a_{22}=4
+]
+
+---
+
+# Equality of Matrices
+
+Two matrices are equal iff:
+
+1. Same dimensions
+2. Corresponding entries equal
+
+---
+
+Example
+
+[
+\begin{bmatrix}
+1&2\
+3&4
+\end{bmatrix}
+=============
+
+\begin{bmatrix}
+1&2\
+3&4
+\end{bmatrix}
+]
+
+Equal.
+
+---
+
+But:
+
+[
+\begin{bmatrix}
+1&2\
+3&4
+\end{bmatrix}
+\neq
+\begin{bmatrix}
+1&2\
+4&3
+\end{bmatrix}
+]
+
+---
+
+# Matrix Addition
+
+Matrices must have the same size.
+
+Add corresponding entries.
+
+---
+
+Example
+
+[
+A=
+\begin{bmatrix}
+1&2\
+3&4
+\end{bmatrix}
+]
+
+[
+B=
+\begin{bmatrix}
+5&6\
+7&8
+\end{bmatrix}
+]
+
+Then:
+
+[
+A+B=
+\begin{bmatrix}
+6&8\
+10&12
+\end{bmatrix}
+]
+
+---
+
+# Scalar Multiplication
+
+Multiply every entry by the scalar.
+
+---
+
+Example
+
+[
+2
+\begin{bmatrix}
+1&2\
+3&4
+\end{bmatrix}
+=============
+
+\begin{bmatrix}
+2&4\
+6&8
+\end{bmatrix}
+]
+
+---
+
+# Matrix Multiplication
+
+This is the most important operation.
+
+---
+
+## Condition
+
+If:
+
+[
+A
+]
+
+is
+
+[
+m\times n
+]
+
+and
+
+[
+B
+]
+
+is
+
+[
+n\times p
+]
+
+then:
+
+[
+AB
+]
+
+exists and is
+
+[
+m\times p
+]
+
+---
+
+# Example
+
+[
+A=
+\begin{bmatrix}
+1&2\
+3&4
+\end{bmatrix}
+]
+
+[
+B=
+\begin{bmatrix}
+5&6\
+7&8
+\end{bmatrix}
+]
+
+Compute:
+
+[
+AB
+]
+
+---
+
+First entry:
+
+[
+1\cdot5+2\cdot7
+]
+
+[
+=19
+]
+
+---
+
+Second entry:
+
+[
+1\cdot6+2\cdot8
+]
+
+[
+=22
+]
+
+---
+
+Third entry:
+
+[
+3\cdot5+4\cdot7
+]
+
+[
+=43
+]
+
+---
+
+Fourth entry:
+
+[
+3\cdot6+4\cdot8
+]
+
+[
+=50
+]
+
+---
+
+Result:
+
+[
+AB=
+\begin{bmatrix}
+19&22\
+43&50
+\end{bmatrix}
+]
+
+---
+
+# Important Fact
+
+Matrix multiplication is NOT commutative.
+
+Generally:
+
+[
+AB\neq BA
+]
+
+---
+
+Example
+
+Using the same matrices:
+
+[
+AB=
+\begin{bmatrix}
+19&22\
+43&50
+\end{bmatrix}
+]
+
+while
+
+[
+BA=
+\begin{bmatrix}
+23&34\
+31&46
+\end{bmatrix}
+]
+
+Different.
+
+---
+
+Memorize:
+
+[
+AB\neq BA
+]
+
+in general.
+
+---
+
+# Identity Matrix
+
+Analogous to number 1.
+
+Notation:
+
+[
+I_n
+]
+
+---
+
+Example
+
+[
+I_2=
+\begin{bmatrix}
+1&0\
+0&1
+\end{bmatrix}
+]
+
+---
+
+Property:
+
+[
+AI=A
+]
+
+and
+
+[
+IA=A
+]
+
+---
+
+Example
+
+[
+\begin{bmatrix}
+1&2\
+3&4
+\end{bmatrix}
+I_2
+===
+
+\begin{bmatrix}
+1&2\
+3&4
+\end{bmatrix}
+]
+
+---
+
+# Transpose
+
+Transpose swaps rows and columns.
+
+Notation:
+
+[
+A^T
+]
+
+---
+
+Example
+
+[
+A=
+\begin{bmatrix}
+1&2&3\
+4&5&6
+\end{bmatrix}
+]
+
+Then:
+
+[
+A^T=
+\begin{bmatrix}
+1&4\
+2&5\
+3&6
+\end{bmatrix}
+]
+
+---
+
+# Boolean Matrices
+
+Very important in discrete mathematics.
+
+Entries are only:
+
+```text
+0
+1
+```
+
+---
+
+Example
+
+[
+\begin{bmatrix}
+1&0&1\
+0&1&0
+\end{bmatrix}
+]
+
+---
+
+Boolean matrices represent:
+
+* Graphs
+* Relations
+* Networks
+
+---
+
+# Boolean Operations
+
+Replace ordinary arithmetic by logic.
+
+---
+
+Addition becomes:
+
+[
+1+1=1
+]
+
+(OR)
+
+---
+
+Multiplication becomes:
+
+[
+1\cdot1=1
+]
+
+(AND)
+
+---
+
+Truth table:
+
+| x | y | x∨y |
+| - | - | --- |
+| 0 | 0 | 0   |
+| 0 | 1 | 1   |
+| 1 | 0 | 1   |
+| 1 | 1 | 1   |
+
+---
+
+# Boolean Matrix Product
+
+Suppose:
+
+[
+A=
+\begin{bmatrix}
+1&0\
+1&1
+\end{bmatrix}
+]
+
+[
+B=
+\begin{bmatrix}
+1&1\
+0&1
+\end{bmatrix}
+]
+
+---
+
+Entry (1,1):
+
+[
+(1\wedge1)\vee(0\wedge0)
+]
+
+[
+=1
+]
+
+---
+
+Entry (1,2):
+
+[
+(1\wedge1)\vee(0\wedge1)
+]
+
+[
+=1
+]
+
+---
+
+Entry (2,1):
+
+[
+(1\wedge1)\vee(1\wedge0)
+]
+
+[
+=1
+]
+
+---
+
+Entry (2,2):
+
+[
+(1\wedge1)\vee(1\wedge1)
+]
+
+[
+=1
+]
+
+---
+
+Result:
+
+[
+AB=
+\begin{bmatrix}
+1&1\
+1&1
+\end{bmatrix}
+]
+
+---
+
+# Applications to Graphs
+
+Suppose:
+
+```text
+A → B
+A → C
+B → C
+```
+
+Adjacency matrix:
+
+[
+M=
+\begin{bmatrix}
+0&1&1\
+0&0&1\
+0&0&0
+\end{bmatrix}
+]
+
+---
+
+Rows:
+
+Source node.
+
+Columns:
+
+Destination node.
+
+---
+
+Boolean matrix powers help count paths.
+
+This becomes important in graph theory.
+
+---
+
+# Why Cryptographers Care
+
+### Hill Cipher
+
+Classical encryption:
+
+[
+C=KM
+]
+
+where:
+
+* K = key matrix
+* M = message vector
+
+---
+
+### Coding Theory
+
+Parity-check matrices.
+
+Generator matrices.
+
+Error correction.
+
+---
+
+### Lattice Cryptography
+
+Modern post-quantum cryptography uses huge matrices.
+
+Schemes like:
+
+* Learning With Errors (LWE)
+* Ring-LWE
+
+are fundamentally matrix-based.
+
+---
+
+# Important Properties
+
+### Associative
+
+[
+(AB)C=A(BC)
+]
+
+---
+
+### Distributive
+
+[
+A(B+C)=AB+AC
+]
+
+---
+
+[
+(A+B)C=AC+BC
+]
+
+---
+
+### Not Commutative
+
+[
+AB\neq BA
+]
+
+---
+
+# Summary
+
+You should know:
+
+### Matrix
+
+[
+m\times n
+]
+
+rectangular array.
+
+---
+
+### Matrix Addition
+
+Add corresponding entries.
+
+---
+
+### Scalar Multiplication
+
+Multiply every entry.
+
+---
+
+### Matrix Multiplication
+
+Row × Column rule.
+
+---
+
+### Identity Matrix
+
+[
+I_n
+]
+
+acts like 1.
+
+---
+
+### Transpose
+
+[
+A^T
+]
+
+swap rows and columns.
+
+---
+
+### Boolean Matrix
+
+Uses:
+
+```text
+OR
+AND
+```
+
+instead of:
+
+```text
++
+×
+```
+
+---
+
+### Key Fact
+
+[
+AB\neq BA
+]
+
+generally.
+
+---
+
+# Exercises
+
+### Medium
+
+1. Add:
+
+[
+\begin{bmatrix}
+1&2\
+3&4
+\end{bmatrix}
++
+\begin{bmatrix}
+5&6\
+7&8
+\end{bmatrix}
+]
+
+---
+
+2. Compute:
+
+[
+3
+\begin{bmatrix}
+2&1\
+4&5
+\end{bmatrix}
+]
+
+---
+
+3. Find:
+
+[
+A^T
+]
+
+for
+
+[
+A=
+\begin{bmatrix}
+1&2&3\
+4&5&6
+\end{bmatrix}
+]
+
+---
+
+### Hard
+
+4. Multiply:
+
+[
+\begin{bmatrix}
+1&2\
+3&4
+\end{bmatrix}
+\begin{bmatrix}
+2&0\
+1&5
+\end{bmatrix}
+]
+
+---
+
+5. Verify:
+
+[
+AI=A
+]
+
+for
+
+[
+A=
+\begin{bmatrix}
+2&3\
+4&5
+\end{bmatrix}
+]
+
+---
+
+6. Explain why matrix multiplication is not commutative.
+
+---
+
+At this point you've completed the core of **Chapter 2**. The next major chapter in Rosen is typically **Algorithms and the Growth of Functions**, which becomes essential for complexity theory, cryptography, and understanding why algorithms like RSA key generation are efficient while brute-force attacks are infeasible.
