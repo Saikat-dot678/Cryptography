@@ -1261,947 +1261,253 @@ $|\mathcal{P}(A)| = 2^{|A|}$
 
 
 
-
-# Chapter 2.6 — Matrices
+# 🧮 Chapter 2.6 — Matrices
 
 This is the last major section of Chapter 2.
-
-At first matrices may seem unrelated to cryptography, but they appear in:
-
-* Error-Correcting Codes
-* Coding Theory
-* Lattice-Based Cryptography
-* Graph Algorithms
-* Network Analysis
-* Hill Cipher (classical cryptography)
-* Boolean Relations
+At first, matrices may seem unrelated to cryptography, but they appear in:
+* Error-Correcting Codes 🛡️
+* Coding Theory 💻
+* Lattice-Based Cryptography 🕸️
+* Graph Algorithms 🛤️
+* Network Analysis 🌐
+* Hill Cipher (classical cryptography) 🔐
+* Boolean Relations 🔗
 
 Rosen focuses on matrices as discrete structures rather than advanced linear algebra.
 
 ---
 
-# 1. What is a Matrix?
+## 🧱 1. What is a Matrix?
 
 A matrix is a rectangular arrangement of numbers.
 
-Example:
+**Example:**
+$$A = \begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}$$
 
-[
-A=
-\begin{bmatrix}
-1 & 2\
-3 & 4
-\end{bmatrix}
-]
+* **Rows:** `1 2` and `3 4`
+* **Columns:** `1 3` and `2 4`
 
----
+### 📏 Matrix Dimensions
+If a matrix has $m$ rows and $n$ columns, it is called an $m \times n$ matrix.
 
-Rows:
+**Example:**
+$$\begin{bmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \end{bmatrix}$$
+has 2 rows and 3 columns.
+Therefore, it is a $2 \times 3$ matrix.
 
-```text
-1 2
-3 4
-```
+### 📍 Matrix Entries
+The entry in row $i$ and column $j$ is denoted as $a_{ij}$.
 
-Columns:
-
-```text
-1 3
-
-2 4
-```
-
----
-
-# Matrix Dimensions
-
-If a matrix has:
-
-* m rows
-* n columns
-
-it is called an:
-
-[
-m\times n
-]
-
-matrix.
-
----
-
-Example
-
-[
-\begin{bmatrix}
-1 & 2 & 3\
-4 & 5 & 6
-\end{bmatrix}
-]
-
-has:
-
-```text
-2 rows
-3 columns
-```
-
-Therefore:
-
-[
-2\times3
-]
-
-matrix.
-
----
-
-# Matrix Entries
-
-The entry in row i and column j is:
-
-[
-a_{ij}
-]
-
----
-
-Example
-
-[
-A=
-\begin{bmatrix}
-1 & 2\
-3 & 4
-\end{bmatrix}
-]
-
+**Example:**
+$$A = \begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}$$
 Then:
-
-[
-a_{11}=1
-]
-
-[
-a_{12}=2
-]
-
-[
-a_{21}=3
-]
-
-[
-a_{22}=4
-]
+* $a_{11} = 1$
+* $a_{12} = 2$
+* $a_{21} = 3$
+* $a_{22} = 4$
 
 ---
 
-# Equality of Matrices
+## ⚖️ Equality of Matrices
 
-Two matrices are equal iff:
+Two matrices are equal **iff** (if and only if):
+1. They have the same dimensions.
+2. Corresponding entries are equal.
 
-1. Same dimensions
-2. Corresponding entries equal
+**Example (Equal):**
+$$\begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix} = \begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}$$
 
----
-
-Example
-
-[
-\begin{bmatrix}
-1&2\
-3&4
-\end{bmatrix}
-=============
-
-\begin{bmatrix}
-1&2\
-3&4
-\end{bmatrix}
-]
-
-Equal.
+**Example (Not Equal):**
+$$\begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix} \neq \begin{bmatrix} 1 & 2 \\ 4 & 3 \end{bmatrix}$$
 
 ---
 
-But:
+## ➕ Matrix Addition
 
-[
-\begin{bmatrix}
-1&2\
-3&4
-\end{bmatrix}
-\neq
-\begin{bmatrix}
-1&2\
-4&3
-\end{bmatrix}
-]
+Matrices must have the **same size**. Add corresponding entries.
 
----
-
-# Matrix Addition
-
-Matrices must have the same size.
-
-Add corresponding entries.
-
----
-
-Example
-
-[
-A=
-\begin{bmatrix}
-1&2\
-3&4
-\end{bmatrix}
-]
-
-[
-B=
-\begin{bmatrix}
-5&6\
-7&8
-\end{bmatrix}
-]
-
+**Example:**
+$$A = \begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}, \quad B = \begin{bmatrix} 5 & 6 \\ 7 & 8 \end{bmatrix}$$
 Then:
-
-[
-A+B=
-\begin{bmatrix}
-6&8\
-10&12
-\end{bmatrix}
-]
+$$A + B = \begin{bmatrix} 6 & 8 \\ 10 & 12 \end{bmatrix}$$
 
 ---
 
-# Scalar Multiplication
+## ✖️ Scalar Multiplication
 
 Multiply every entry by the scalar.
 
----
-
-Example
-
-[
-2
-\begin{bmatrix}
-1&2\
-3&4
-\end{bmatrix}
-=============
-
-\begin{bmatrix}
-2&4\
-6&8
-\end{bmatrix}
-]
+**Example:**
+$$2 \begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix} = \begin{bmatrix} 2 & 4 \\ 6 & 8 \end{bmatrix}$$
 
 ---
 
-# Matrix Multiplication
+## 💥 Matrix Multiplication
 
 This is the most important operation.
 
----
+### 🚦 Condition
+If $A$ is $m \times n$ and $B$ is $n \times p$, then $AB$ exists and is an $m \times p$ matrix.
 
-## Condition
+**Example:**
+$$A = \begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}, \quad B = \begin{bmatrix} 5 & 6 \\ 7 & 8 \end{bmatrix}$$
 
-If:
-
-[
-A
-]
-
-is
-
-[
-m\times n
-]
-
-and
-
-[
-B
-]
-
-is
-
-[
-n\times p
-]
-
-then:
-
-[
-AB
-]
-
-exists and is
-
-[
-m\times p
-]
-
----
-
-# Example
-
-[
-A=
-\begin{bmatrix}
-1&2\
-3&4
-\end{bmatrix}
-]
-
-[
-B=
-\begin{bmatrix}
-5&6\
-7&8
-\end{bmatrix}
-]
-
-Compute:
-
-[
-AB
-]
-
----
-
-First entry:
-
-[
-1\cdot5+2\cdot7
-]
-
-[
-=19
-]
-
----
-
-Second entry:
-
-[
-1\cdot6+2\cdot8
-]
-
-[
-=22
-]
-
----
-
-Third entry:
-
-[
-3\cdot5+4\cdot7
-]
-
-[
-=43
-]
-
----
-
-Fourth entry:
-
-[
-3\cdot6+4\cdot8
-]
-
-[
-=50
-]
-
----
+Compute $AB$:
+* First entry (Row 1 $\times$ Col 1): $1\cdot5 + 2\cdot7 = 19$
+* Second entry (Row 1 $\times$ Col 2): $1\cdot6 + 2\cdot8 = 22$
+* Third entry (Row 2 $\times$ Col 1): $3\cdot5 + 4\cdot7 = 43$
+* Fourth entry (Row 2 $\times$ Col 2): $3\cdot6 + 4\cdot8 = 50$
 
 Result:
+$$AB = \begin{bmatrix} 19 & 22 \\ 43 & 50 \end{bmatrix}$$
 
-[
-AB=
-\begin{bmatrix}
-19&22\
-43&50
-\end{bmatrix}
-]
-
----
-
-# Important Fact
-
-Matrix multiplication is NOT commutative.
-
+### ⚠️ Important Fact
+Matrix multiplication is **NOT** commutative.
 Generally:
+$$AB \neq BA$$
 
-[
-AB\neq BA
-]
-
----
-
-Example
-
-Using the same matrices:
-
-[
-AB=
-\begin{bmatrix}
-19&22\
-43&50
-\end{bmatrix}
-]
-
+**Example:** Using the same matrices:
+$$AB = \begin{bmatrix} 19 & 22 \\ 43 & 50 \end{bmatrix}$$
 while
-
-[
-BA=
-\begin{bmatrix}
-23&34\
-31&46
-\end{bmatrix}
-]
-
-Different.
+$$BA = \begin{bmatrix} 23 & 34 \\ 31 & 46 \end{bmatrix}$$
+Different!
+*Memorize:* $AB \neq BA$ in general. 🧠
 
 ---
 
-Memorize:
+## 🪞 Identity Matrix
 
-[
-AB\neq BA
-]
+Analogous to the number 1.
+**Notation:** $I_n$
 
-in general.
+**Example:**
+$$I_2 = \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix}$$
 
----
+**Property:** $AI = A$ and $IA = A$
 
-# Identity Matrix
-
-Analogous to number 1.
-
-Notation:
-
-[
-I_n
-]
+**Example:**
+$$\begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix} I_2 = \begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}$$
 
 ---
 
-Example
-
-[
-I_2=
-\begin{bmatrix}
-1&0\
-0&1
-\end{bmatrix}
-]
-
----
-
-Property:
-
-[
-AI=A
-]
-
-and
-
-[
-IA=A
-]
-
----
-
-Example
-
-[
-\begin{bmatrix}
-1&2\
-3&4
-\end{bmatrix}
-I_2
-===
-
-\begin{bmatrix}
-1&2\
-3&4
-\end{bmatrix}
-]
-
----
-
-# Transpose
+## 🔄 Transpose
 
 Transpose swaps rows and columns.
+**Notation:** $A^T$
 
-Notation:
-
-[
-A^T
-]
-
----
-
-Example
-
-[
-A=
-\begin{bmatrix}
-1&2&3\
-4&5&6
-\end{bmatrix}
-]
-
+**Example:**
+$$A = \begin{bmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \end{bmatrix}$$
 Then:
-
-[
-A^T=
-\begin{bmatrix}
-1&4\
-2&5\
-3&6
-\end{bmatrix}
-]
+$$A^T = \begin{bmatrix} 1 & 4 \\ 2 & 5 \\ 3 & 6 \end{bmatrix}$$
 
 ---
 
-# Boolean Matrices
+## 🤖 Boolean Matrices
 
-Very important in discrete mathematics.
+Very important in discrete mathematics. Entries are only **0** and **1**.
 
-Entries are only:
-
-```text
-0
-1
-```
-
----
-
-Example
-
-[
-\begin{bmatrix}
-1&0&1\
-0&1&0
-\end{bmatrix}
-]
-
----
+**Example:**
+$$\begin{bmatrix} 1 & 0 & 1 \\ 0 & 1 & 0 \end{bmatrix}$$
 
 Boolean matrices represent:
+* Graphs 📈
+* Relations 🔗
+* Networks 🌐
 
-* Graphs
-* Relations
-* Networks
-
----
-
-# Boolean Operations
-
+### 🔣 Boolean Operations
 Replace ordinary arithmetic by logic.
+* Addition becomes: $1 + 1 = 1$ (**OR** $\vee$)
+* Multiplication becomes: $1 \cdot 1 = 1$ (**AND** $\wedge$)
 
----
+**Truth table (OR):**
+| $x$ | $y$ | $x \vee y$ |
+| :---: | :---: | :---: |
+| 0 | 0 | 0 |
+| 0 | 1 | 1 |
+| 1 | 0 | 1 |
+| 1 | 1 | 1 |
 
-Addition becomes:
-
-[
-1+1=1
-]
-
-(OR)
-
----
-
-Multiplication becomes:
-
-[
-1\cdot1=1
-]
-
-(AND)
-
----
-
-Truth table:
-
-| x | y | x∨y |
-| - | - | --- |
-| 0 | 0 | 0   |
-| 0 | 1 | 1   |
-| 1 | 0 | 1   |
-| 1 | 1 | 1   |
-
----
-
-# Boolean Matrix Product
-
+### ✖️ Boolean Matrix Product
 Suppose:
+$$A = \begin{bmatrix} 1 & 0 \\ 1 & 1 \end{bmatrix}, \quad B = \begin{bmatrix} 1 & 1 \\ 0 & 1 \end{bmatrix}$$
 
-[
-A=
-\begin{bmatrix}
-1&0\
-1&1
-\end{bmatrix}
-]
-
-[
-B=
-\begin{bmatrix}
-1&1\
-0&1
-\end{bmatrix}
-]
-
----
-
-Entry (1,1):
-
-[
-(1\wedge1)\vee(0\wedge0)
-]
-
-[
-=1
-]
-
----
-
-Entry (1,2):
-
-[
-(1\wedge1)\vee(0\wedge1)
-]
-
-[
-=1
-]
-
----
-
-Entry (2,1):
-
-[
-(1\wedge1)\vee(1\wedge0)
-]
-
-[
-=1
-]
-
----
-
-Entry (2,2):
-
-[
-(1\wedge1)\vee(1\wedge1)
-]
-
-[
-=1
-]
-
----
+* Entry (1,1): $(1 \wedge 1) \vee (0 \wedge 0) = 1$
+* Entry (1,2): $(1 \wedge 1) \vee (0 \wedge 1) = 1$
+* Entry (2,1): $(1 \wedge 1) \vee (1 \wedge 0) = 1$
+* Entry (2,2): $(1 \wedge 1) \vee (1 \wedge 1) = 1$
 
 Result:
-
-[
-AB=
-\begin{bmatrix}
-1&1\
-1&1
-\end{bmatrix}
-]
+$$AB = \begin{bmatrix} 1 & 1 \\ 1 & 1 \end{bmatrix}$$
 
 ---
 
-# Applications to Graphs
+## 🕸️ Applications to Graphs
 
-Suppose:
+Suppose we have the following paths:
+* A → B
+* A → C
+* B → C
 
-```text
-A → B
-A → C
-B → C
-```
+**Adjacency matrix:**
+$$M = \begin{bmatrix} 0 & 1 & 1 \\ 0 & 0 & 1 \\ 0 & 0 & 0 \end{bmatrix}$$
+* **Rows:** Source node.
+* **Columns:** Destination node.
 
-Adjacency matrix:
-
-[
-M=
-\begin{bmatrix}
-0&1&1\
-0&0&1\
-0&0&0
-\end{bmatrix}
-]
+Boolean matrix powers help count paths. This becomes important in graph theory. 🛤️
 
 ---
 
-Rows:
+## 🔐 Why Cryptographers Care
 
-Source node.
+**Hill Cipher:**
+Classical encryption: $C = KM$
+where $K$ = key matrix, $M$ = message vector.
 
-Columns:
+**Coding Theory:**
+Parity-check matrices, Generator matrices, Error correction. 🛡️
 
-Destination node.
-
----
-
-Boolean matrix powers help count paths.
-
-This becomes important in graph theory.
+**Lattice Cryptography:**
+Modern post-quantum cryptography uses huge matrices. Schemes like *Learning With Errors (LWE)* and *Ring-LWE* are fundamentally matrix-based. ⚛️
 
 ---
 
-# Why Cryptographers Care
+## 📌 Important Properties
 
-### Hill Cipher
-
-Classical encryption:
-
-[
-C=KM
-]
-
-where:
-
-* K = key matrix
-* M = message vector
+* **Associative:** $(AB)C = A(BC)$
+* **Distributive:** $A(B+C) = AB+AC$ and $(A+B)C = AC+BC$
+* **Not Commutative:** $AB \neq BA$ ⚠️
 
 ---
 
-### Coding Theory
-
-Parity-check matrices.
-
-Generator matrices.
-
-Error correction.
-
----
-
-### Lattice Cryptography
-
-Modern post-quantum cryptography uses huge matrices.
-
-Schemes like:
-
-* Learning With Errors (LWE)
-* Ring-LWE
-
-are fundamentally matrix-based.
-
----
-
-# Important Properties
-
-### Associative
-
-[
-(AB)C=A(BC)
-]
-
----
-
-### Distributive
-
-[
-A(B+C)=AB+AC
-]
-
----
-
-[
-(A+B)C=AC+BC
-]
-
----
-
-### Not Commutative
-
-[
-AB\neq BA
-]
-
----
-
-# Summary
+## ✅ Summary
 
 You should know:
-
-### Matrix
-
-[
-m\times n
-]
-
-rectangular array.
-
----
-
-### Matrix Addition
-
-Add corresponding entries.
+* **Matrix:** $m \times n$ rectangular array.
+* **Matrix Addition:** Add corresponding entries.
+* **Scalar Multiplication:** Multiply every entry.
+* **Matrix Multiplication:** Row $\times$ Column rule.
+* **Identity Matrix:** $I_n$ acts like 1.
+* **Transpose:** $A^T$ swap rows and columns.
+* **Boolean Matrix:** Uses **OR** and **AND** instead of $+$ and $\times$.
+* **Key Fact:** $AB \neq BA$ generally.
 
 ---
 
-### Scalar Multiplication
-
-Multiply every entry.
-
----
-
-### Matrix Multiplication
-
-Row × Column rule.
-
----
-
-### Identity Matrix
-
-[
-I_n
-]
-
-acts like 1.
-
----
-
-### Transpose
-
-[
-A^T
-]
-
-swap rows and columns.
-
----
-
-### Boolean Matrix
-
-Uses:
-
-```text
-OR
-AND
-```
-
-instead of:
-
-```text
-+
-×
-```
-
----
-
-### Key Fact
-
-[
-AB\neq BA
-]
-
-generally.
-
----
-
-# Exercises
+## ✍️ Exercises
 
 ### Medium
-
 1. Add:
-
-[
-\begin{bmatrix}
-1&2\
-3&4
-\end{bmatrix}
-+
-\begin{bmatrix}
-5&6\
-7&8
-\end{bmatrix}
-]
-
----
-
+   $$\begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix} + \begin{bmatrix} 5 & 6 \\ 7 & 8 \end{bmatrix}$$
 2. Compute:
-
-[
-3
-\begin{bmatrix}
-2&1\
-4&5
-\end{bmatrix}
-]
-
----
-
-3. Find:
-
-[
-A^T
-]
-
-for
-
-[
-A=
-\begin{bmatrix}
-1&2&3\
-4&5&6
-\end{bmatrix}
-]
-
----
+   $$3 \begin{bmatrix} 2 & 1 \\ 4 & 5 \end{bmatrix}$$
+3. Find $A^T$ for:
+   $$A = \begin{bmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \end{bmatrix}$$
 
 ### Hard
-
 4. Multiply:
-
-[
-\begin{bmatrix}
-1&2\
-3&4
-\end{bmatrix}
-\begin{bmatrix}
-2&0\
-1&5
-\end{bmatrix}
-]
-
----
-
-5. Verify:
-
-[
-AI=A
-]
-
-for
-
-[
-A=
-\begin{bmatrix}
-2&3\
-4&5
-\end{bmatrix}
-]
-
----
-
+   $$\begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix} \begin{bmatrix} 2 & 0 \\ 1 & 5 \end{bmatrix}$$
+5. Verify $AI = A$ for:
+   $$A = \begin{bmatrix} 2 & 3 \\ 4 & 5 \end{bmatrix}$$
 6. Explain why matrix multiplication is not commutative.
 
----
-
-At this point you've completed the core of **Chapter 2**. The next major chapter in Rosen is typically **Algorithms and the Growth of Functions**, which becomes essential for complexity theory, cryptography, and understanding why algorithms like RSA key generation are efficient while brute-force attacks are infeasible.
+*At this point you've completed the core of Chapter 2. The next major chapter in Rosen is typically **Algorithms and the Growth of Functions**, which becomes essential for complexity theory, cryptography, and understanding why algorithms like RSA key generation are efficient while brute-force attacks are infeasible.* 🚀
